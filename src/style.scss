@@ -1,0 +1,55 @@
+$text: #DB7093;
+body {
+  color: $text;
+  margin: 0;
+}
+
+html {
+  background-color: #8f8;
+  font-size: 18px;
+}
+
+// main setup
+
+main {
+  // width: 320px;
+  margin: 0 auto;
+}
+
+// header and footer
+
+header, footer {
+  text-align: center;
+}
+
+footer {
+  img {
+    width: 30px;
+    position: relative;
+    top: 8px;
+  }
+}
+
+// main content
+
+main {
+  color: red;
+  .container {
+    display: -ms-grid;
+    display: grid;
+    span {
+      color: #9E546C
+    }
+  }
+  p {
+    text-align: center;
+    font-family: Courier New, Courier, monospace;
+    font-size: 1.2em;
+    color: $text;
+  }
+}
+
+canvas {
+  margin: auto;
+  border: 1px solid black;
+}
