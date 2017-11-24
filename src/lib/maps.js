@@ -101,24 +101,24 @@ let maps = [
   'ooooo       ooooooo    w   ooooooooooo' +
   'ooooooooooooooooooo        ooooooooooo' +
   'oooooooooooooooooooooooooooooooooooooo',
-  'ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo' +
-  'ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo' +
-  'oooooooo                    c     w                                    oo' +
-  'oooooooo      e       oo ooooooooooooooooooooooooooooooooo             oo' +
-  'oooooooo          l   oo oooooooooooooooooooooooooooooooooooooooooooooooo' +
-  'oooooooo  h           oo oooooooooooooooooooooooooooooooooooooooooooooooo' +
-  'oooooooooooooooooooooooo oooooooooooooooooooooooooooooooooooooooooooooooo' +
-  'oooooooooooooooooooooooo oooooooooooooooooooooooooooooooooooooooooooooooo' +
-  'oooooooooooooooooooooooo oooooooooooooooooooooooooooooooooooooooooooooooo' +
-  'oooooooooooooooooooooooo oooooooooooooooooooooooooooooooooooooooooooooooo' +
-  'oooooooooooooooooooooooo oooooooooooooooooooooooooooooooooooooooooooooooo' +
-  'oooooooooooooooooooooooo oooooooooooooooooooooooooooooooooooooooooooooooo' +
-  'oooooooooooooooooooooooo oooooooooooooooooooooooooooooooooooooooooooooooo' +
-  'ooooooooooooo            oooooooooooooooooooooooooooooooooooooooooooooooo' +
-  'ooooooooooooo  e         oooooooooooooooooooooooooooooooooooooooooooooooo' +
-  'ooooooooooooo            oooooooooooooooooooooooooooooooooooooooooooooooo' +
-  'ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo' +
-  'ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo'
+  'oooooooooooooooooooooooooooooooooooooooooooo' +
+  'oooooooooooooooooooooooooooooooooooooooooooo' +
+  'oooooooo                 e          w     oo' +
+  'oooooooo      e       oo oooo         c   oo' +
+  'oooooooo          l   oo ooooooooooooooooooo' +
+  'oooooooo  h           oo ooooooooooooooooooo' +
+  'oooooooooooooooooooooooo ooooooooooooooooooo' +
+  'oooooooooooooooooooooooo ooooooooooooooooooo' +
+  'oooooooooooooooooooooooo ooooooooooooooooooo' +
+  'oooooooooooooooooooooooo ooooooooooooooooooo' +
+  'oooooooooooooooooooooooo ooooooooooooooooooo' +
+  'oooooooooooooooooooooooo ooooooooooooooooooo' +
+  'oooooooooooooooooooooooo ooooooooooooooooooo' +
+  'ooooooooooooo            ooooooooooooooooooo' +
+  'ooooooooooooo  e         ooooooooooooooooooo' +
+  'ooooooooooooo            ooooooooooooooooooo' +
+  'oooooooooooooooooooooooooooooooooooooooooooo' +
+  'oooooooooooooooooooooooooooooooooooooooooooo'
 ];
 
 const eachMapWithItsMethods = (map, index, maps) => {
@@ -132,9 +132,6 @@ const eachMapWithItsMethods = (map, index, maps) => {
     getCave: getCave.bind(null, maps, index, width),
     getWeapon: getWeapon.bind(null, maps, index, width),
     getHealth: getHealth.bind(null, maps, index, width),
-    // getEnemies: function (dungeon) {
-    //   return getEnemies(maps, index, width, dungeon)
-    // }
     getEnemies: getEnemies.bind(null, maps, index, width)
   };
 };
