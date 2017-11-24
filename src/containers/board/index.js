@@ -18,6 +18,9 @@ const controls = {
 class Board extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+
+    };
     this.onKeyDown = this.props.onKeyDown.bind(this);
   }
 
@@ -36,6 +39,17 @@ class Board extends Component {
     const herosWidth = 10;
     const herosHeight = 12;
     const paddindTop = size - herosHeight;
+
+    if (this.props.game_over) {
+      ctx.fillStyle = '#AFF';
+      ctx.fillRect(150, 50, 100, 60);
+      ctx.fillStyle = '#000';
+      ctx.font = '14px sans-serif';
+      ctx.fillText('Game Over', 162, 68, 160);
+      ctx.font = '12px cursive';
+      ctx.fillText('restartin in 5..', 162, 88, 160);
+      return;
+    }
 
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, boardWidth, boardHeight);
@@ -113,7 +127,8 @@ Board = connect(function mapStateToProps(state) {
     enemies: state.enemies,
     dungeon: state.dungeon,
     attack: state.attack,
-    experience: state.experience
+    experience: state.experience,
+    game_over: state.game_over
   }
 }, function mapDispatchToProps(dispatch) {
   return {

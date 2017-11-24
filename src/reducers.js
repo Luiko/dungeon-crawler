@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
 
 const reducer = combineReducers({
-  hero, dungeon, whiteSpaces, cave, weapon, attack, health, enemies, experience
+  hero, dungeon, whiteSpaces, cave, weapon, attack, health, enemies,
+  experience, game_over
 });
 
 export default reducer;
@@ -103,6 +104,15 @@ function experience(state = null, action) {
   switch (action.type) {
     case 'FIGHT_ENEMIES':
       return action.payload.experience;
+    default:
+      return state;
+  }
+}
+
+function game_over(state = false, action) {
+  switch (action.type) {
+    case 'FIGHT_ENEMIES':
+     return action.payload.health === 0;
     default:
       return state;
   }
