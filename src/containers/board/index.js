@@ -19,7 +19,7 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      restarting: false
     };
     this.onKeyDown = this.props.onKeyDown.bind(this);
   }
@@ -48,6 +48,23 @@ class Board extends Component {
       ctx.fillText('Game Over', 162, 68, 160);
       ctx.font = '12px cursive';
       ctx.fillText('restartin in 5..', 162, 88, 160);
+      if (!this.state.restarting) {
+        this.setState({ restarting: true });
+        let counter = 0;
+        const animation = setInterval(() => {
+          if (counter++ < 5) {
+            ctx.fillStyle = '#AFF';
+            ctx.fillRect(150, 50, 100, 60);
+            ctx.fillStyle = '#000';
+            ctx.font = '14px sans-serif';
+            ctx.fillText('Game Over', 162, 68, 160);
+            ctx.font = '12px cursive';
+            ctx.fillText(`restartin in ${5 - counter}..`, 162, 88, 160);
+          } else {
+            clearInterval(animation);
+          }
+        }, 999);
+      }
       return;
     }
 
