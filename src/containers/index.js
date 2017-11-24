@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import deepEqual from 'fast-deep-equal';
-import { passDungeon, endGame, pickWeapon, pickHealth } from './../actions';
+import { passDungeon, pickWeapon, pickHealth } from './../actions';
 import maps from './../lib/maps';
 import Board from './board/index';
 
@@ -9,7 +9,7 @@ class App extends Component {
   componentDidUpdate() {
     const {
       hero, cave, dungeon, weapon, health,
-      pickWeapon, pickHealth, passDungeon, endGame
+      pickWeapon, pickHealth, passDungeon
     } = this.props;
     const dungeonPassed = deepEqual(hero, cave);
     const weaponPicked = deepEqual(hero, weapon.point);
@@ -17,8 +17,7 @@ class App extends Component {
     let action;
     if (dungeonPassed) {
       if (dungeon === 2) {
-        endGame();
-        console.log('game end');
+
       }
       else
         action = passDungeon.bind(null,dungeon);
@@ -65,5 +64,5 @@ App = connect(function mapStateToProps(state) {
     health: state.health,
     experience: state.experience
   }
-}, { pickWeapon, pickHealth, passDungeon, endGame })(App);
+}, { pickWeapon, pickHealth, passDungeon })(App);
 export default App;

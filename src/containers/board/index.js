@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import deepEqual from 'fast-deep-equal';
 import {
-  moveTop, moveRight,
-  moveBottom, moveLeft,
-  fightEnemies, pickWeapon,
-  levelup
+  moveTop, moveRight, moveBottom, moveLeft, fightEnemies, levelup, restart
 } from './../../actions'
 
 const controls = {
@@ -62,6 +59,7 @@ class Board extends Component {
             ctx.fillText(`restartin in ${5 - counter}..`, 162, 88, 160);
           } else {
             clearInterval(animation);
+            this.props.restart();
           }
         }, 999);
       }
@@ -150,6 +148,7 @@ Board = connect(function mapStateToProps(state) {
 }, function mapDispatchToProps(dispatch) {
   return {
     levelup: (index) => dispatch(levelup(index)),
+    restart: () => dispatch(restart()),
     onKeyDown(prox) {
       prox.preventDefault();
       const { hero, enemies, dungeon, health, attack, experience } = this.props;

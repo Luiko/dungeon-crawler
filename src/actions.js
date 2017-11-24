@@ -1,29 +1,41 @@
 import maps from './lib/maps';
 import weapons from './weapons';
 import deepEqual from 'fast-deep-equal';
+import initalState from './initial_state';
+
+export const MOVE_TOP = 'MOVE_TOP';
+export const MOVE_RIGHT = 'MOVE_RIGHT'
+export const MOVE_BOTTOM = 'MOVE_BOTTOM';
+export const MOVE_LEFT = 'MOVE_LEFT';
+export const PASS_DUNGEON = 'PASS_DUNGEON';
+export const PICK_WEAPON = 'PICK_WEAPON';
+export const PICK_HEALTH = 'PICK_HEALTH';
+export const FIGHT_ENEMIES = 'FIGHT_ENEMIES';
+export const LEVELUP = 'LEVELUP';
+export const RESTART = 'RESTART';
 
 export const moveTop = y => ({
-  type: 'MOVE_TOP',
+  type: MOVE_TOP,
   y: y - 1
 });
 
 export const moveRight = x => ({
-  type: 'MOVE_RIGHT',
+  type: MOVE_RIGHT,
   x: x + 1
 });
 
 export const moveBottom = y => ({
-  type: 'MOVE_BOTTOM',
+  type: MOVE_BOTTOM,
   y: y + 1
 });
 
 export const moveLeft = x => ({
-  type: 'MOVE_LEFT',
+  type: MOVE_LEFT,
   x: x - 1
 });
 
 export const passDungeon = (dungeon) => ({
-  type: 'PASS_DUNGEON',
+  type: PASS_DUNGEON,
   dungeon: dungeon + 1,
   hero: maps[dungeon].getHero(),
   whiteSpaces: maps[dungeon].getEmptySpaces(),
@@ -37,12 +49,8 @@ export const passDungeon = (dungeon) => ({
   }))
 });
 
-export const endGame = () => ({
-  type: 'END_GAME'
-});
-
 export const pickWeapon = ({ index }) => ({
-  type: 'PICK_WEAPON',
+  type: PICK_WEAPON,
   name: weapons[index + 1],
   index: index + 1,
   point: null,
@@ -50,7 +58,7 @@ export const pickWeapon = ({ index }) => ({
 });
 
 export const pickHealth = (level) => ({
-  type: 'PICK_HEALTH',
+  type: PICK_HEALTH,
   health: level * 20 + Math.ceil(Math.random() * (2 + level)) * 10,
   point: null
 });
@@ -61,7 +69,7 @@ function sustrgtz(a, b) {
 } 
 
 //hero fight with enemies, vanish enemies, get experience, levelup, 
-function fight(health, attack, enemies, point, dungeon, experience) {
+export function _fight(health, attack, enemies, point, dungeon, experience) {
   const enemy = enemies.find(val => deepEqual(val.point, point));
   const nextEnemies = enemies.map(e => {
     const newE = { health: sustrgtz(e.health, attack, dungeon) };
@@ -94,14 +102,15 @@ function fight(health, attack, enemies, point, dungeon, experience) {
 }
 
 export const fightEnemies = (health, attack, enemies, point, dungeon, experience) => ({
-  type: 'FIGHT_ENEMIES',
-  payload: fight(health, attack, enemies, point, dungeon, experience)
+  type: FIGHT_ENEMIES,
+  payload: _fight(health, attack, enemies, point, dungeon, experience)
 });
 
 export const levelup  = (index) => ({
-  type: 'LEVELUP',
+  type: LEVELUP,
   name: weapons[index + 1],
   index: index + 1,
   attack: 15 + index * 15 + Math.round(Math.random() * (15 + index * 5))
 });
 
+export const restart = () => Object.assign({ type: RESTART }, initalState);
