@@ -60,6 +60,7 @@ class Board extends Component {
           } else {
             clearInterval(animation);
             this.props.restart();
+            this.setState({ restarting: false });
           }
         }, 999);
       }
@@ -177,7 +178,6 @@ Board = connect(function mapStateToProps(state) {
           .find(e => deepEqual(e.point, nextPoint(e.point, action)))
         ;
         if (fight) {
-          console.log('fight');
           requestAnimationFrame(function () {
             dispatch(fightEnemies(
               health,
