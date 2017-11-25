@@ -104,6 +104,18 @@ class Board extends Component {
     ));
   }
 
+  componentWillUpdate(nextProps) {
+    if (nextProps.dungeon !== this.props.dungeon) {
+      const canvas = document.querySelector('canvas');
+      const ctx = canvas.getContext('2d');
+      const size = 15;
+      const boardWidth = size * this.props.width;
+      const boardHeight = size * this.props.height;
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, boardWidth, boardHeight);
+    }
+  }
+
   componentDidUpdate() {
     this.componentDidMount.call(this);
   }
