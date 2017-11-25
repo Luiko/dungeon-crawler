@@ -97,6 +97,10 @@ function health(state = null, action) {
       return Object.assign({}, state, { point: action.health });
     case FIGHT_ENEMIES:
       return Object.assign({}, state, { quantity: action.payload.health });
+    case LEVELUP:
+      return Object.assign({}, state, { 
+        quantity: state.quantity + action.health 
+      });
     case RESTART:
        return action.health;
     default:

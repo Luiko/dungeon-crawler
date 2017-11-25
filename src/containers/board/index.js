@@ -22,8 +22,10 @@ class Board extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.experience.level > this.props.experience.level) {
-      this.props.levelup(this.props.weapon.index);
+    const level = nextProps.experience.level;
+    const prevLevel = this.props.experience.level;
+    if (level > prevLevel) {
+      this.props.levelup(this.props.weapon.index, prevLevel);
     }
   }
 
@@ -148,7 +150,7 @@ Board = connect(function mapStateToProps(state) {
   }
 }, function mapDispatchToProps(dispatch) {
   return {
-    levelup: (index) => dispatch(levelup(index)),
+    levelup: (index, level) => dispatch(levelup(index, level)),
     restart: () => dispatch(restart()),
     onKeyDown(prox) {
       prox.preventDefault();

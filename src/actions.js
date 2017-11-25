@@ -106,11 +106,12 @@ export const fightEnemies = (health, attack, enemies, point, dungeon, experience
   payload: _fight(health, attack, enemies, point, dungeon, experience)
 });
 
-export const levelup  = (index) => ({
+export const levelup  = (index, level) => ({
   type: LEVELUP,
   name: weapons[index + 1],
   index: index + 1,
-  attack: 15 + index * 15 + Math.round(Math.random() * (15 + index * 5))
+  attack: 15 + index * 15 + Math.round(Math.random() * (15 + index * 5)),
+  health: level * (15 +  Math.round(Math.random() * 5))
 });
 
 export const restart = () => Object.assign({ type: RESTART }, initalState);
