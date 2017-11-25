@@ -49,22 +49,6 @@ function findItem(maps, index, width, item) {
   return map.split('').reduce(indexToPoint, {});
 }
 
-function getHero(maps, index, width) {
-  return findItem(maps, index, width, 'h');
-}
-
-function getCave(maps, index, width) {
-  return findItem(maps, index, width, 'c');
-}
-
-function getWeapon(maps, index, width) {
-  return findItem(maps, index, width, 'w');
-}
-
-function getHealth(maps, index, width) {
-  return findItem(maps, index, width, 'l');
-}
-
 function getEnemies(maps, index, width) {
   const map = maps[index];
   const indexToPoint = (arr, value, i) => {
@@ -143,11 +127,12 @@ const eachMapWithItsMethods = (map, index, maps) => {
     getWidth: getWidth.bind(null, maps, index),
     getHeight: getHeight.bind(null, index),
     getEmptySpaces: getEmptySpaces.bind(null, maps, index, width),
-    getHero: getHero.bind(null, maps, index, width),
-    getCave: getCave.bind(null, maps, index, width),
-    getWeapon: getWeapon.bind(null, maps, index, width),
-    getHealth: getHealth.bind(null, maps, index, width),
-    getEnemies: getEnemies.bind(null, maps, index, width)
+    getHero: findItem.bind(null, maps, index, width, 'h'),
+    getCave: findItem.bind(null, maps, index, width, 'c'),
+    getWeapon: findItem.bind(null, maps, index, width, 'w'),
+    getHealth: findItem.bind(null, maps, index, width, 'l'),
+    getEnemies: getEnemies.bind(null, maps, index, width),
+    getBoss: findItem.bind(null, maps, index, width, 'b')
   };
 };
 

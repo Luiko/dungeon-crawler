@@ -46,7 +46,10 @@ export const passDungeon = (dungeon) => ({
     id: 'enemy#' + index + 1,
     health: 40 * (dungeon + 1) + 10 * Math.ceil(Math.random() * 3),
     point
-  }))
+  })),
+  boss: {
+    point: maps[dungeon].getBoss()
+  }
 });
 
 export const pickWeapon = ({ index }) => ({
@@ -68,9 +71,9 @@ function sustrgtz(a, b) {
   return Math.max(sustr, 0);
 } 
 
-//hero fight with enemies, vanish enemies, get experience, levelup, 
+//hero fight with enemies, vanish enemies, get experience, levelup,
 export function _fight(health, attack, enemies, point, dungeon, experience) {
-  const enemy = enemies.find(val => deepEqual(val.point, point));
+  const enemy = enemies.find(e => deepEqual(e.point, point));
   const nextEnemies = enemies.map(e => {
     const newE = { health: sustrgtz(e.health, attack, dungeon) };
     const thisIs = e.id === enemy.id;

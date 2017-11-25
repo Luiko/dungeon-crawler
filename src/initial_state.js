@@ -26,5 +26,6 @@ export default {
     levelup: 80,
     current: 0
   },
-  game_over: false
+  game_over: false,
+  boss: null
 };

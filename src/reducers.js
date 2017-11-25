@@ -7,7 +7,7 @@ import {
 
 const reducer = combineReducers({
   hero, dungeon, whiteSpaces, cave, weapon, attack, health, enemies,
-  experience, game_over
+  experience, game_over, boss
 });
 
 export default reducer;
@@ -137,6 +137,15 @@ function game_over(state = false, action) {
       return action.payload.health === 0;
     case RESTART:
       return action.game_over;
+    default:
+      return state;
+  }
+}
+
+function boss(state = null, action) {
+  switch (action.type) {
+    case PASS_DUNGEON:
+      return action.boss;
     default:
       return state;
   }

@@ -71,37 +71,55 @@ class Board extends Component {
 
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, boardWidth, boardHeight);
-    this.props.void.forEach(({ x, y }) => ctx.clearRect(x * size , y * size, size, size));
+    this.props.void.forEach(({ x, y }) => ctx.clearRect(
+      x * size,
+      y * size,
+      size,
+      size
+    ));
 
-    const { hero, cave } = this.props;
+    const { hero, cave, boss } = this.props;
     const weapon = this.props.weapon.point;
     const health = this.props.health.point;
     const enemies = this.props.enemies.map(e => e.point);
 
-    ctx.fillStyle = '#00B';
-    ctx.fillRect(hero.x * size,
-      hero.y * size + paddindTop,
-      herosWidth, herosHeight)
-    ;
-    
-    ctx.fillStyle = '#777';
-    ctx.fillRect(cave.x * size, cave.y * size, size, size);
+    const drawGuy = (point) => ctx.fillRect(
+      point.x * size,
+      point.y * size + paddindTop,
+      herosWidth,
+      herosHeight
+    );
+    const drawBlock = (point) => ctx.fillRect(
+      point.x * size,
+      point.y * size,
+      size,
+      size
+    );
+    const drawItem = (point) => ctx.fillRect(
+      point.x * size,
+      point.y * size,
+      size * 0.7,
+      size * 0.7
+    );
 
+    ctx.fillStyle = '#00B';
+    drawGuy(hero);
+    ctx.fillStyle = '#777';
+    drawBlock(cave);
     if (weapon) {
       ctx.fillStyle = '#990';
-      ctx.fillRect(weapon.x * size, weapon.y * size, size * 0.7, size * 0.7);
+      drawItem(weapon);
     }
     if (health) {
       ctx.fillStyle = '#070';
-      ctx.fillRect(health.x * size, health.y * size, size * 0.7, size * 0.7);
+      drawItem(health);
     }
     ctx.fillStyle = '#700';
-    enemies.forEach(enemy => ctx.fillRect(
-      enemy.x * size,
-      enemy.y * size + paddindTop,
-      herosWidth,
-      herosHeight
-    ));
+    enemies.forEach(enemy => drawGuy(enemy));
+    if (boss) {
+      ctx.fillStyle = '#F0F';
+      drawBlock(boss.point);
+    }
   }
 
   componentWillUpdate(nextProps) {
@@ -158,7 +176,8 @@ Board = connect(function mapStateToProps(state) {
     dungeon: state.dungeon,
     attack: state.attack,
     experience: state.experience,
-    game_over: state.game_over
+    game_over: state.game_over,
+    boss: state.boss
   }
 }, function mapDispatchToProps(dispatch) {
   return {
