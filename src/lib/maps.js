@@ -1,16 +1,6 @@
 function getWidth(maps, index) {
-  let num;
-  switch (index) {
-    case 0:
-      num = 13;
-      break;
-    case 1:
-      num = 18;
-      break;
-    default:
-      throw Error;
-  }
-  return maps[index].length / num;
+  let height = getHeight(index);
+  return maps[index].length / height;
 }
 
 function getHeight(index) {
@@ -19,7 +9,10 @@ function getHeight(index) {
       return 13;
     case 1:
       return 18;
+    case 2:
+      return 22;
     default:
+      console.error('out of index, map height');
       return 0;
   }
 }
@@ -118,7 +111,29 @@ let maps = [
   'ooooooooooooo  e         ooooooooooooooooooo' +
   'ooooooooooooo            ooooooooooooooooooo' +
   'oooooooooooooooooooooooooooooooooooooooooooo' +
-  'oooooooooooooooooooooooooooooooooooooooooooo'
+  'oooooooooooooooooooooooooooooooooooooooooooo',
+  'oooooooooooooooooooooooooooooooooooooooooooooooooooo' +
+  'oooooooooooooooooooooooooooooooooooooooooooooooooooo' +
+  'ooooooooooooooooooo  w  oooooooooooooooooooooooooooo' +
+  'ooooooooooooooooooo     oooooooooooooooooooooooooooo' +
+  'ooooooooooooooooooooooo                        ooooo' +
+  'ooooooooooooooooooooooo oooooooooooooooooo     ooooo' +
+  'ooooooooooooooooooooooo oooooo     ooooooo  e  ooooo' +
+  'oooooo  l               oooooo     ooooooo     ooooo' +
+  'oooooo     oooooooooooo oooooo   l             ooooo' +
+  'oooooo  e  oooooooooooo oooooo     ooooooo     ooooo' +
+  'oooooo     oooooooooooo oooooooooooooooooooooooooooo' +
+  'ooooooooooooooooooooooo oooooooooooooooooooooooooooo' +
+  'oooooooooooo           h              oooooooooooooo' +
+  'oooooooooooo oooooooooo ooooooooooooo oooooooooooooo' +
+  'oooooooooooo oooooooooo ooooooooooooo oooooooooooooo' +
+  'oooooooooooo oooooooooo ooo    oooooo oooooooooooooo' +
+  'oooooooo     oooooooooo ooo  b        oooooooooooooo' +
+  'oooooooo     oooooooooo ooo    oooooo oooooooooooooo' +
+  'oooooooo   e oooooooooo ooooo ooooooo oooooooooooooo' +
+  'oooooooo     oooooooooo               oooooooooooooo' +
+  'oooooooooooooooooooooooooooooooooooooooooooooooooooo' +
+  'oooooooooooooooooooooooooooooooooooooooooooooooooooo'
 ];
 
 const eachMapWithItsMethods = (map, index, maps) => {

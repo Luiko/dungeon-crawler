@@ -16,11 +16,7 @@ class App extends Component {
     const healthPicked = deepEqual(hero, health.point);
     let action;
     if (dungeonPassed) {
-      if (dungeon === 2) {
-
-      }
-      else
-        action = passDungeon.bind(null,dungeon);
+      action = passDungeon.bind(null,dungeon);
     } else if (weaponPicked) {
       action = pickWeapon.bind(null,weapon);
     } else if (healthPicked) {
