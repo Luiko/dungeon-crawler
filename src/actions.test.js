@@ -11,7 +11,7 @@ test('levelup', t => {
     const minAttack = 15;
     const maxAttack = 30;
     t.equal(action.type, LEVELUP, `type should be ${LEVELUP}`);
-    t.equal(action.name, weapons[index + 1], 'name of weapon');
+    t.equal(action.name, weapons[index + 1].name, 'name of weapon');
     t.true(
         action.attack >= minAttack && action.attack <= maxAttack,
         'should be in a range'

@@ -8,7 +8,7 @@ export default {
   cave: maps[0].getCave(),
   weapon: {
     point: maps[0].getWeapon(),
-    name: weapons[0],
+    name: weapons[0].name,
     index: 0
   },
   attack: 10,

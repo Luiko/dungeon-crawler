@@ -4,6 +4,7 @@ import deepEqual from 'fast-deep-equal';
 import { passDungeon, pickWeapon, pickHealth } from './../actions';
 import maps from './../lib/maps';
 import Board from './board/index';
+import weapons from '../weapons';
 
 class App extends Component {
   componentDidUpdate() {
@@ -38,6 +39,11 @@ class App extends Component {
               {this.props.experience.current}/{this.props.experience.levelup}XP
             <span> Attack: </span>{this.props.attack}
             <span> Weapon: </span>{this.props.weapon.name}
+            <img
+              src={weapons[this.props.weapon.index].url}
+              title={weapons[this.props.weapon.index].name}
+              width={'40px'}
+            ></img>
             <span> Dungeon: </span>{this.props.dungeon}
           </p>
         </div>
