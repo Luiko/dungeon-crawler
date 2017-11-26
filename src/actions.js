@@ -14,6 +14,17 @@ export const FIGHT_ENEMIES = 'FIGHT_ENEMIES';
 export const LEVELUP = 'LEVELUP';
 export const RESTART = 'RESTART';
 
+//balance stats
+const upgradeAttack = (index) => 15 + Math.round(Math.random()
+  * (5 + index * 4))
+;
+const pickEnemyHealth = (dungeon) => (65 * dungeon)
+  + (20 * Math.ceil(Math.random() * 4))
+;
+const upgradePickHealth = (level) => level * 14 + Math.ceil(Math.random()
+  * (2 + level)) * 10
+;
+
 export const moveTop = y => ({
   type: MOVE_TOP,
   y: y - 1
@@ -44,7 +55,7 @@ export const passDungeon = (dungeon) => ({
   health: maps[dungeon].getHealth(),
   enemies: maps[dungeon].getEnemies().map((point, index) => ({
     id: 'enemy#' + index + 1,
-    health: 40 * (dungeon + 1) + 10 * Math.ceil(Math.random() * 3),
+    health: pickEnemyHealth(dungeon),
     point
   })),
   boss: {
@@ -57,12 +68,12 @@ export const pickWeapon = ({ index }) => ({
   name: weapons[index + 1].name,
   index: index + 1,
   point: null,
-  attack: 15 + index * 15 + Math.round(Math.random() * (15 + index * 5))
+  attack: upgradeAttack(index)
 });
 
 export const pickHealth = (level) => ({
   type: PICK_HEALTH,
-  health: level * 20 + Math.ceil(Math.random() * (2 + level)) * 10,
+  health: upgradePickHealth(level),
   point: null
 });
 
@@ -85,15 +96,16 @@ export function _fight(health, attack, enemies, point, dungeon, experience) {
     return e;
   }).filter(e => e !== null)
   let current = enemies.length === nextEnemies.length? experience.current :
-    experience.current + dungeon * 40;
+    experience.current + dungeon * 65;
   let { level, levelup } = experience;
   if (current >= experience.levelup) {
     current -= experience.levelup;
     level = experience.level + 1;
-    levelup = experience.levelup * 3;
+    levelup =  Math.round(experience.levelup * 2.6);
   }
+  const enemyDamage = dungeon * 6 + Math.round(Math.random() * 2) * dungeon;
   const payload = {
-    health: sustrgtz(health.quantity, Math.pow(dungeon + 1, 3)),
+    health: sustrgtz(health.quantity, enemyDamage),
     enemies: nextEnemies,
     experience: {
       level,
@@ -113,8 +125,8 @@ export const levelup = (index, level) => ({
   type: LEVELUP,
   name: weapons[index + 1].name,
   index: index + 1,
-  attack: 15 + index * 15 + Math.round(Math.random() * (15 + index * 5)),
-  health: level * (15 +  Math.round(Math.random() * 5))
+  attack: upgradeAttack(index),
+  health: upgradePickHealth(level)
 });
 
 export const restart = () => Object.assign({ type: RESTART }, initalState);

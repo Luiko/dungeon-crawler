@@ -73,9 +73,9 @@ let maps = [
   'ooooooooooooooooooo oooooooooooooooooo' +
   'ooooooooooooooooooo oooooooooooooooooo' +
   'ooooo       ooooooo oooooooooooooooooo' +
-  'ooooo e     ooooooo    l   ooooooooooo' +
-  'ooooo                      ooooooooooo' +
-  'ooooo       ooooooo    w   ooooooooooo' +
+  'ooooo l     ooooooo        ooooooooooo' +
+  'ooooo              e       ooooooooooo' +
+  'ooooo       ooooooo        ooooooooooo' +
   'ooooooooooooooooooo        ooooooooooo' +
   'oooooooooooooooooooooooooooooooooooooo',
   'oooooooooooooooooooooooooooooooooooooooooooo' +

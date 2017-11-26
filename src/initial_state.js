@@ -17,8 +17,8 @@ export default {
     point: maps[0].getHealth()
   },
   enemies: maps[0].getEnemies().map((point, index) => ({
-    id: 'enemy#' + index + 1,
-    health: 40 * 1 + 10 * Math.ceil(Math.random() * 3),
+    id: 'enemy#' + (index + 1),
+    health: 40 + 10 * Math.ceil(Math.random() * 3),
     point
   })),
   experience: {
