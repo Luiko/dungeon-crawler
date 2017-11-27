@@ -13,6 +13,7 @@ export const PICK_HEALTH = 'PICK_HEALTH';
 export const FIGHT_ENEMIES = 'FIGHT_ENEMIES';
 export const LEVELUP = 'LEVELUP';
 export const RESTART = 'RESTART';
+export const FIGHT_BOSS = 'FIGHT_BOSS';
 
 //balance stats
 const upgradeAttack = (index) => 15 + Math.round(Math.random()
@@ -59,6 +60,8 @@ export const passDungeon = (dungeon) => ({
     point
   })),
   boss: {
+    health: 400,
+    attack: 50,
     point: maps[dungeon].getBoss()
   }
 });
@@ -120,6 +123,18 @@ export const fightEnemies = (health, attack, enemies, point, dungeon, experience
   type: FIGHT_ENEMIES,
   payload: _fight(health, attack, enemies, point, dungeon, experience)
 });
+
+export const fightBoss = (health, attack, boss) => {
+  const newBossHealth = sustrgtz(boss.health, attack);
+  const _boss = Object.assign({}, boss, { health: newBossHealth });
+  return {
+    type: FIGHT_BOSS,
+    payload: {
+      health: sustrgtz(health.quantity, boss.attack),
+      boss: newBossHealth > 0? _boss : null
+    }
+  };
+};
 
 export const levelup = (index, level) => ({
   type: LEVELUP,

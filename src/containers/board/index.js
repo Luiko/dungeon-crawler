@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import deepEqual from 'fast-deep-equal';
 import {
-  moveTop, moveRight, moveBottom, moveLeft, fightEnemies, levelup, restart
+  moveTop, moveRight, moveBottom, moveLeft, fightEnemies, levelup, restart, fightBoss
 } from './../../actions'
 
 const controls = {
@@ -185,7 +185,9 @@ Board = connect(function mapStateToProps(state) {
     restart: () => dispatch(restart()),
     onKeyDown(prox) {
       prox.preventDefault();
-      const { hero, enemies, dungeon, health, attack, experience } = this.props;
+      const {
+        hero, enemies, dungeon, health, attack, experience, boss
+      } = this.props;
       const { x, y } = hero;
       const vacuous = this.props.void;
       let func;
@@ -199,18 +201,23 @@ Board = connect(function mapStateToProps(state) {
         func = moveLeft.bind(null, x);
       } else return;
       const action = func();
+      const enemyList = enemies.map(e => e.point);
       const doMove = collition({
         hero,
         whiteSpaces: vacuous,
-        enemies: enemies.map(e => e.point)
+        enemies: !boss? enemyList: [...enemyList, boss.point]
       }, action);
       if (doMove) {
         requestAnimationFrame(() => dispatch(action));
       } else {
-        const fight = enemies
+        const frontEnemy = enemies
           .find(e => deepEqual(e.point, nextPoint(e.point, action)))
         ;
-        if (fight) {
+        const frontBoss = !boss? false: deepEqual(
+          boss.point,
+          nextPoint(boss.point, action))
+        ;
+        if (frontEnemy) {
           requestAnimationFrame(function () {
             dispatch(fightEnemies(
               health,
@@ -220,6 +227,12 @@ Board = connect(function mapStateToProps(state) {
               dungeon,
               experience));
           });
+        } else if (frontBoss) {
+          requestAnimationFrame(() => dispatch(fightBoss(
+            health,
+            attack,
+            boss
+          )));
         }
       }
     }

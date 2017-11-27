@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 
 import {
   MOVE_TOP, MOVE_RIGHT, MOVE_BOTTOM, MOVE_LEFT, PASS_DUNGEON, PICK_HEALTH,
-  PICK_WEAPON, LEVELUP, FIGHT_ENEMIES, RESTART
+  PICK_WEAPON, LEVELUP, FIGHT_ENEMIES, RESTART, FIGHT_BOSS
 } from './actions';
 
 const reducer = combineReducers({
@@ -76,7 +76,6 @@ function weapon(state = null, { type, point, name, index, weapon}) {
 function attack(state = 0, action) {
   switch (action.type) {
     case PICK_WEAPON:
-      return state + action.attack;
     case LEVELUP:
       return state + action.attack;
     case RESTART:
@@ -96,13 +95,14 @@ function health(state = null, action) {
     case PASS_DUNGEON:
       return Object.assign({}, state, { point: action.health });
     case FIGHT_ENEMIES:
+    case FIGHT_BOSS:
       return Object.assign({}, state, { quantity: action.payload.health });
     case LEVELUP:
-      return Object.assign({}, state, { 
-        quantity: state.quantity + action.health 
+      return Object.assign({}, state, {
+        quantity: state.quantity + action.health
       });
     case RESTART:
-       return action.health;
+      return action.health;
     default:
       return state;
   }
@@ -134,6 +134,7 @@ function experience(state = null, action) {
 function game_over(state = false, action) {
   switch (action.type) {
     case FIGHT_ENEMIES:
+    case FIGHT_BOSS:
       return action.payload.health === 0;
     case RESTART:
       return action.game_over;
@@ -146,6 +147,8 @@ function boss(state = null, action) {
   switch (action.type) {
     case PASS_DUNGEON:
       return action.boss;
+    case FIGHT_BOSS:
+      return action.payload.boss;
     default:
       return state;
   }
