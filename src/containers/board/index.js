@@ -67,6 +67,13 @@ class Board extends Component {
         }, 999);
       }
       return;
+    } else if (this.props.won) {
+      ctx.fillStyle = '#EEE';
+      ctx.fillRect(150, 40, 110, 80);
+      ctx.fillStyle = '#111';
+      ctx.font = '16px sans-serif';
+      ctx.fillText('You won!!!', 172, 76, 160);
+      return;
     }
 
     ctx.fillStyle = '#000';
@@ -177,7 +184,8 @@ Board = connect(function mapStateToProps(state) {
     attack: state.attack,
     experience: state.experience,
     game_over: state.game_over,
-    boss: state.boss
+    boss: state.boss,
+    won: state.won
   }
 }, function mapDispatchToProps(dispatch) {
   return {
@@ -186,11 +194,14 @@ Board = connect(function mapStateToProps(state) {
     onKeyDown(prox) {
       prox.preventDefault();
       const {
-        hero, enemies, dungeon, health, attack, experience, boss
+        hero, enemies, dungeon, health, attack, experience, boss, game_over,
+        won
       } = this.props;
+      const _break = game_over || won;
       const { x, y } = hero;
       const vacuous = this.props.void;
       let func;
+      if (_break) return;
       if (controls.top.includes(prox.key)) {
         func = moveTop.bind(null, y);
       } else if (controls.right.includes(prox.key)) {

@@ -1,7 +1,6 @@
 import test from 'tape';
-// import weapons from './weapons';
 
-import { levelup, LEVELUP, fightEnemy, FIGHT_ENEMY, enemyDamage } from './actions';
+import { levelup, LEVELUP, fightEnemy } from './actions';
 
 test('levelup', t => {
   t.plan(4);

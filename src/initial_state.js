@@ -27,5 +27,6 @@ export default {
     total: 0
   },
   game_over: false,
-  boss: null
+  boss: null,
+  won: false
 };

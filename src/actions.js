@@ -22,7 +22,7 @@ const pickEnemyHealth = (dungeon) => (65 * dungeon)
   + (20 * Math.ceil(Math.random() * 4))
 ;
 const upgradePickHealth = (level) => level * 14 + Math.ceil(Math.random()
-  * (2 + level)) * 10
+  * (2 + level)) * 12
 ;
 export const enemyDamage = (dungeon) => (dungeon * 6) +
   (Math.round(Math.random() * 2) * dungeon)
@@ -127,7 +127,7 @@ export const fightBoss = (health, attack, boss) => {
     type: FIGHT_BOSS,
     payload: {
       health: Math.max(health - boss.attack, 0),
-      boss: newBossHealth > 0? _boss : null
+      boss: _boss
     }
   };
 };
