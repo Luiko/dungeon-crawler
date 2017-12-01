@@ -1,6 +1,5 @@
 import maps from './lib/maps';
 import weapons from './weapons';
-import deepEqual from 'fast-deep-equal';
 import initalState from './initial_state';
 
 export const MOVE_TOP = 'MOVE_TOP';
@@ -10,7 +9,7 @@ export const MOVE_LEFT = 'MOVE_LEFT';
 export const PASS_DUNGEON = 'PASS_DUNGEON';
 export const PICK_WEAPON = 'PICK_WEAPON';
 export const PICK_HEALTH = 'PICK_HEALTH';
-export const FIGHT_ENEMIES = 'FIGHT_ENEMIES';
+export const FIGHT_ENEMY = 'FIGHT_ENEMY';
 export const LEVELUP = 'LEVELUP';
 export const RESTART = 'RESTART';
 export const FIGHT_BOSS = 'FIGHT_BOSS';
@@ -25,6 +24,13 @@ const pickEnemyHealth = (dungeon) => (65 * dungeon)
 const upgradePickHealth = (level) => level * 14 + Math.ceil(Math.random()
   * (2 + level)) * 10
 ;
+export const enemyDamage = (dungeon) => (dungeon * 6) +
+  (Math.round(Math.random() * 2) * dungeon)
+;
+export const beatEnemyExperience = (dungeon, experience) => experience + dungeon
+  * 65
+;
+const upgradeLvlup = (levelup) => Math.round(levelup * 2.6);
 
 export const moveTop = y => ({
   type: MOVE_TOP,
@@ -80,57 +86,47 @@ export const pickHealth = (level) => ({
   point: null
 });
 
-function sustrgtz(a, b) {
-  const sustr = a - b;
-  return Math.max(sustr, 0);
-} 
-
-//hero fight with enemies, vanish enemies, get experience, levelup,
-export function _fight(health, attack, enemies, point, dungeon, experience) {
-  const enemy = enemies.find(e => deepEqual(e.point, point));
-  const nextEnemies = enemies.map(e => {
-    const newE = { health: sustrgtz(e.health, attack, dungeon) };
-    const thisIs = e.id === enemy.id;
-    if (thisIs && newE.health > 0) {
-      return Object.assign({}, e, newE);
-    } else if (thisIs) {
-      return null;
+export function fightEnemy(health, attack, enemy, experience, dungeon) {
+  const { id, health: eHealth } = enemy;
+  const _enemy = { id, health: Math.max(eHealth - attack, 0) };
+  const newExperience = beatEnemyExperience(dungeon, experience.total);
+  const enemyDefeated = _enemy.health === 0;
+  const levelup = enemyDefeated && newExperience >= experience.levelup;
+  let _experience;
+  if (enemyDefeated) {
+    if (levelup) {
+      _experience = {
+        total: newExperience,
+        levelup: upgradeLvlup(experience.levelup),
+        level: experience.level + 1
+      };
+    } else {
+      _experience = {
+        total: newExperience,
+        levelup: experience.levelup,
+        level: experience.level
+      };
     }
-    return e;
-  }).filter(e => e !== null)
-  let current = enemies.length === nextEnemies.length? experience.current :
-    experience.current + dungeon * 65;
-  let { level, levelup } = experience;
-  if (current >= experience.levelup) {
-    current -= experience.levelup;
-    level = experience.level + 1;
-    levelup =  Math.round(experience.levelup * 2.6);
+  } else {
+    _experience = experience;
   }
-  const enemyDamage = dungeon * 6 + Math.round(Math.random() * 2) * dungeon;
-  const payload = {
-    health: sustrgtz(health.quantity, enemyDamage),
-    enemies: nextEnemies,
-    experience: {
-      level,
-      levelup,
-      current
+  return {
+    type: FIGHT_ENEMY,
+    payload: {
+      health: Math.max(health - enemyDamage(dungeon), 0),
+      enemy: _enemy,
+      experience: _experience
     }
-  };
-  return payload;
+  }
 }
 
-export const fightEnemies = (health, attack, enemies, point, dungeon, experience) => ({
-  type: FIGHT_ENEMIES,
-  payload: _fight(health, attack, enemies, point, dungeon, experience)
-});
-
 export const fightBoss = (health, attack, boss) => {
-  const newBossHealth = sustrgtz(boss.health, attack);
+  const newBossHealth = Math.max(boss.health - attack, 0);
   const _boss = Object.assign({}, boss, { health: newBossHealth });
   return {
     type: FIGHT_BOSS,
     payload: {
-      health: sustrgtz(health.quantity, boss.attack),
+      health: Math.max(health - boss.attack, 0),
       boss: newBossHealth > 0? _boss : null
     }
   };

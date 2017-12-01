@@ -36,7 +36,7 @@ class App extends Component {
             <span>Health: </span>{this.props.health.quantity}
             <span> Level: </span>{this.props.experience.level}
             <span> Experience: </span>
-              {this.props.experience.current}/{this.props.experience.levelup}XP
+              {this.props.experience.total}/{this.props.experience.levelup}XP
             <span> Attack: </span>{this.props.attack}
             <span> Weapon: </span>{this.props.weapon.name}
             <img

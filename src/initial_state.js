@@ -24,7 +24,7 @@ export default {
   experience: {
     level: 1,
     levelup: 80,
-    current: 0
+    total: 0
   },
   game_over: false,
   boss: null

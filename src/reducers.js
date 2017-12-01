@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 
 import {
   MOVE_TOP, MOVE_RIGHT, MOVE_BOTTOM, MOVE_LEFT, PASS_DUNGEON, PICK_HEALTH,
-  PICK_WEAPON, LEVELUP, FIGHT_ENEMIES, RESTART, FIGHT_BOSS
+  PICK_WEAPON, LEVELUP, FIGHT_ENEMY, RESTART, FIGHT_BOSS
 } from './actions';
 
 const reducer = combineReducers({
@@ -94,7 +94,7 @@ function health(state = null, action) {
       });
     case PASS_DUNGEON:
       return Object.assign({}, state, { point: action.health });
-    case FIGHT_ENEMIES:
+    case FIGHT_ENEMY:
     case FIGHT_BOSS:
       return Object.assign({}, state, { quantity: action.payload.health });
     case LEVELUP:
@@ -108,13 +108,22 @@ function health(state = null, action) {
   }
 }
 
-function enemies(state = null, action) {
+function enemies(state = [], action) {
 switch (action.type) {
     case PASS_DUNGEON:
     case RESTART:
       return action.enemies;
-    case FIGHT_ENEMIES:
-      return action.payload.enemies;
+    case FIGHT_ENEMY:
+      return state.map((e) => {
+        if (e.id === action.payload.enemy.id) {
+          if (action.payload.enemy.health !== 0)
+            return Object.assign({}, e, action.payload.enemy);
+          else
+            return null
+        } else {
+          return e;
+        }
+      }).filter((e) => e !== null);
     default:
       return state;
   }
@@ -122,7 +131,7 @@ switch (action.type) {
 
 function experience(state = null, action) {
   switch (action.type) {
-    case FIGHT_ENEMIES:
+    case FIGHT_ENEMY:
       return action.payload.experience;
     case RESTART:
       return action.experience;
@@ -133,7 +142,7 @@ function experience(state = null, action) {
 
 function game_over(state = false, action) {
   switch (action.type) {
-    case FIGHT_ENEMIES:
+    case FIGHT_ENEMY:
     case FIGHT_BOSS:
       return action.payload.health === 0;
     case RESTART:
@@ -146,6 +155,7 @@ function game_over(state = false, action) {
 function boss(state = null, action) {
   switch (action.type) {
     case PASS_DUNGEON:
+    case RESTART:
       return action.boss;
     case FIGHT_BOSS:
       return action.payload.boss;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import deepEqual from 'fast-deep-equal';
 import {
-  moveTop, moveRight, moveBottom, moveLeft, fightEnemies, levelup, restart, fightBoss
+  moveTop, moveRight, moveBottom, moveLeft, levelup, restart, fightBoss, fightEnemy
 } from './../../actions'
 
 const controls = {
@@ -211,25 +211,23 @@ Board = connect(function mapStateToProps(state) {
         requestAnimationFrame(() => dispatch(action));
       } else {
         const frontEnemy = enemies
-          .find(e => deepEqual(e.point, nextPoint(e.point, action)))
+          .find(e => deepEqual(e.point, nextPoint(hero, action)))
         ;
         const frontBoss = !boss? false: deepEqual(
           boss.point,
-          nextPoint(boss.point, action))
+          nextPoint(hero, action))
         ;
         if (frontEnemy) {
-          requestAnimationFrame(function () {
-            dispatch(fightEnemies(
-              health,
-              attack,
-              enemies,
-              nextPoint(hero, action),
-              dungeon,
-              experience));
-          });
+          requestAnimationFrame(() => dispatch(fightEnemy(
+            health.quantity,
+            attack,
+            frontEnemy,
+            experience,
+            dungeon
+          )));
         } else if (frontBoss) {
           requestAnimationFrame(() => dispatch(fightBoss(
-            health,
+            health.quantity,
             attack,
             boss
           )));
