@@ -47,10 +47,7 @@ class App extends Component {
             <span> Dungeon: </span>{this.props.dungeon}
           </p>
         </div>
-        <Board
-          width={maps[d].getWidth()}
-          height={maps[d].getHeight()}
-        />
+        <Board/>
       </div>
     );
   }

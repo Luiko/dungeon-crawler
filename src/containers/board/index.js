@@ -15,6 +15,7 @@ const controls = {
 class Board extends Component {
   constructor(props) {
     super(props);
+    this.starterPoint = { x: 26, y: 8 };
     this.state = {
       restarting: false
     };
@@ -33,8 +34,6 @@ class Board extends Component {
     const canvas = document.querySelector('canvas');
     const ctx = canvas.getContext('2d');
     const size = 15;
-    const boardWidth = size * this.props.width;
-    const boardHeight = size * this.props.height;
     const herosWidth = 10;
     const herosHeight = 12;
     const paddindTop = size - herosHeight;
@@ -76,41 +75,51 @@ class Board extends Component {
       return;
     }
 
+    const { hero, cave, boss } = this.props;
+    const viewport = {
+      x: hero.x - this.starterPoint.x,
+      y: hero.y - this.starterPoint.y
+    };
+
     ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, boardWidth, boardHeight);
+    ctx.fillRect(0, 0, 800, 400);
     this.props.void.forEach(({ x, y }) => ctx.clearRect(
-      x * size,
-      y * size,
+      (x - viewport.x) * size,
+      (y - viewport.y) * size,
       size,
       size
     ));
 
-    const { hero, cave, boss } = this.props;
     const weapon = this.props.weapon.point;
     const health = this.props.health.point;
     const enemies = this.props.enemies.map(e => e.point);
 
     const drawGuy = (point) => ctx.fillRect(
-      point.x * size,
-      point.y * size + paddindTop,
+      (point.x - viewport.x) * size,
+      (point.y - viewport.y) * size + paddindTop,
       herosWidth,
       herosHeight
     );
     const drawBlock = (point) => ctx.fillRect(
-      point.x * size,
-      point.y * size,
+      (point.x - viewport.x) * size,
+      (point.y - viewport.y) * size,
       size,
       size
     );
     const drawItem = (point) => ctx.fillRect(
-      point.x * size,
-      point.y * size,
+      (point.x - viewport.x) * size,
+      (point.y - viewport.y) * size,
       size * 0.7,
       size * 0.7
     );
 
     ctx.fillStyle = '#00B';
-    drawGuy(hero);
+    ctx.fillRect(
+      (this.starterPoint.x) * size,
+      (this.starterPoint.y) * size + paddindTop,
+      herosWidth,
+      herosHeight
+    );
     ctx.fillStyle = '#777';
     drawBlock(cave);
     if (weapon) {
@@ -147,7 +156,7 @@ class Board extends Component {
 
   render() {
     return (
-      <canvas width={800} height={600} tabIndex={1}
+      <canvas width={800} height={400} tabIndex={1}
         onKeyDown={this.onKeyDown}>
         hello world!
       </canvas>
