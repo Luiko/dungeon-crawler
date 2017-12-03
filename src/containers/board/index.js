@@ -114,11 +114,11 @@ class Board extends Component {
     const lighting = s => {
       const x = Math.pow(s.x - this.starterPoint.x, 2);
       const y = Math.pow(s.y - this.starterPoint.y, 2);
-      const isInShadowRange = Math.sqrt(x + y) <= shadowRange;
-      return isInShadowRange;
+      const isInLightRange = Math.sqrt(x + y) <= shadowRange;
+      return isInLightRange;
     };
 
-    ctx.fillStyle = '#444';
+    ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, 800, 400);
     for (
       let x = this.starterPoint.x - shadowRange;
@@ -131,9 +131,9 @@ class Board extends Component {
         y++
       ) {
         if (lighting({ x, y })) {
-          ctx.fillStyle = '#000';
+          ctx.fillStyle = '#888';
         } else {
-          ctx.fillStyle = '#444';
+          ctx.fillStyle = '#000';
         }
         ctx.fillRect(
           x * size,
@@ -161,8 +161,8 @@ class Board extends Component {
       herosWidth,
       herosHeight
     );
-    ctx.fillStyle = '#777';
-    shadowing(cave) && drawBlock(cave);
+    ctx.fillStyle = '#488';
+    cave && shadowing(cave) && drawBlock(cave);
     if (weapon && shadowing(weapon)) {
       ctx.fillStyle = '#990';
       drawItem(weapon);
@@ -173,7 +173,7 @@ class Board extends Component {
     }
     ctx.fillStyle = '#700';
     enemies.filter(shadowing).forEach(enemy => drawGuy(enemy));
-    if (boss && shadowing(boss)) {
+    if (boss && shadowing(boss.point)) {
       ctx.fillStyle = '#F0F';
       drawBlock(boss.point);
     }

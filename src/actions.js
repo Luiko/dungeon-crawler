@@ -52,25 +52,33 @@ export const moveLeft = x => ({
   x: x - 1
 });
 
-export const passDungeon = (dungeon) => ({
-  type: PASS_DUNGEON,
-  dungeon: dungeon + 1,
-  hero: maps[dungeon].getHero(),
-  whiteSpaces: maps[dungeon].getEmptySpaces(),
-  cave: maps[dungeon].getCave(),
-  weapon: maps[dungeon].getWeapon(),
-  health: maps[dungeon].getHealth(),
-  enemies: maps[dungeon].getEnemies().map((point, index) => ({
-    id: 'enemy#' + index + 1,
-    health: pickEnemyHealth(dungeon),
-    point
-  })),
-  boss: {
-    health: 400,
-    attack: 50,
-    point: maps[dungeon].getBoss()
+export const passDungeon = (dungeon) => {
+  let boss;
+  if (maps[dungeon].getBoss()) {
+    boss = {
+      health: 400,
+      attack: 50,
+      point: maps[dungeon].getBoss()
+    };
+  } else {
+    boss = null;
   }
-});
+  return ({
+    type: PASS_DUNGEON,
+    dungeon: dungeon + 1,
+    hero: maps[dungeon].getHero(),
+    whiteSpaces: maps[dungeon].getEmptySpaces(),
+    cave: maps[dungeon].getCave(),
+    weapon: maps[dungeon].getWeapon(),
+    health: maps[dungeon].getHealth(),
+    enemies: maps[dungeon].getEnemies().map((point, index) => ({
+      id: 'enemy#' + index + 1,
+      health: pickEnemyHealth(dungeon),
+      point
+    })),
+    boss
+  });
+};
 
 export const pickWeapon = ({ index }) => ({
   type: PICK_WEAPON,
