@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import deepEqual from 'fast-deep-equal';
 import { passDungeon, pickWeapon, pickHealth } from './../actions';
-import maps from './../lib/maps';
 import Board from './board/index';
 import weapons from '../weapons';
 
@@ -28,7 +27,6 @@ class App extends Component {
   }
 
   render() {
-    const d = this.props.dungeon - 1;
     return (
       <div className="container">
         <div>

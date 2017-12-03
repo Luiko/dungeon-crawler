@@ -46,7 +46,7 @@ function findItem(maps, index, width, item) {
     }
     return obj;
   };
-  return map.split('').reduce(indexToPoint, {});
+  return map.split('').reduce(indexToPoint, null);
 }
 
 function getEnemies(maps, index, width) {

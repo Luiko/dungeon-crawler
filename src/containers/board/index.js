@@ -15,7 +15,7 @@ const controls = {
 class Board extends Component {
   constructor(props) {
     super(props);
-    this.starterPoint = { x: 26, y: 8 };
+    this.starterPoint = { x: 26, y: 10 };
     this.state = {
       restarting: false
     };
@@ -81,15 +81,6 @@ class Board extends Component {
       y: hero.y - this.starterPoint.y
     };
 
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, 800, 400);
-    this.props.void.forEach(({ x, y }) => ctx.clearRect(
-      (x - viewport.x) * size,
-      (y - viewport.y) * size,
-      size,
-      size
-    ));
-
     const weapon = this.props.weapon.point;
     const health = this.props.health.point;
     const enemies = this.props.enemies.map(e => e.point);
@@ -113,6 +104,56 @@ class Board extends Component {
       size * 0.7
     );
 
+    const shadowRange = 6;
+    const shadowing = s => {
+      const x = Math.pow(s.x - hero.x, 2);
+      const y = Math.pow(s.y - hero.y, 2);
+      const isInShadowRange = Math.sqrt(x + y) <= shadowRange;
+      return isInShadowRange;
+    };
+    const lighting = s => {
+      const x = Math.pow(s.x - this.starterPoint.x, 2);
+      const y = Math.pow(s.y - this.starterPoint.y, 2);
+      const isInShadowRange = Math.sqrt(x + y) <= shadowRange;
+      return isInShadowRange;
+    };
+
+    ctx.fillStyle = '#444';
+    ctx.fillRect(0, 0, 800, 400);
+    for (
+      let x = this.starterPoint.x - shadowRange;
+      x <= this.starterPoint.x + shadowRange;
+      x++
+    ) {
+      for (
+        let y = this.starterPoint.y - shadowRange;
+        y <= this.starterPoint.y + shadowRange;
+        y++
+      ) {
+        if (lighting({ x, y })) {
+          ctx.fillStyle = '#000';
+        } else {
+          ctx.fillStyle = '#444';
+        }
+        ctx.fillRect(
+          x * size,
+          y * size,
+          size, size
+        );
+      }
+    }
+
+    this
+      .props
+      .void
+      .filter(shadowing)
+      .forEach(({ x, y }) => ctx.clearRect(
+        (x - viewport.x) * size,
+        (y - viewport.y) * size,
+        size,
+        size
+    ));
+
     ctx.fillStyle = '#00B';
     ctx.fillRect(
       (this.starterPoint.x) * size,
@@ -121,18 +162,18 @@ class Board extends Component {
       herosHeight
     );
     ctx.fillStyle = '#777';
-    drawBlock(cave);
-    if (weapon) {
+    shadowing(cave) && drawBlock(cave);
+    if (weapon && shadowing(weapon)) {
       ctx.fillStyle = '#990';
       drawItem(weapon);
     }
-    if (health) {
+    if (health && shadowing(health)) {
       ctx.fillStyle = '#070';
       drawItem(health);
     }
     ctx.fillStyle = '#700';
-    enemies.forEach(enemy => drawGuy(enemy));
-    if (boss) {
+    enemies.filter(shadowing).forEach(enemy => drawGuy(enemy));
+    if (boss && shadowing(boss)) {
       ctx.fillStyle = '#F0F';
       drawBlock(boss.point);
     }
