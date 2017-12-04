@@ -17,7 +17,8 @@ class Board extends Component {
     super(props);
     this.starterPoint = { x: 26, y: 10 };
     this.state = {
-      restarting: false
+      restarting: false,
+      darkness: true
     };
     this.onKeyDown = this.props.onKeyDown.bind(this);
   }
@@ -106,6 +107,7 @@ class Board extends Component {
 
     const shadowRange = 6;
     const shadowing = s => {
+      if (!this.state.darkness) return true;
       const x = Math.pow(s.x - hero.x, 2);
       const y = Math.pow(s.y - hero.y, 2);
       const isInShadowRange = Math.sqrt(x + y) <= shadowRange;
@@ -118,29 +120,34 @@ class Board extends Component {
       return isInLightRange;
     };
 
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, 800, 400);
-    for (
-      let x = this.starterPoint.x - shadowRange;
-      x <= this.starterPoint.x + shadowRange;
-      x++
-    ) {
+    if (this.state.darkness) {
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, 800, 400);
       for (
-        let y = this.starterPoint.y - shadowRange;
-        y <= this.starterPoint.y + shadowRange;
-        y++
+        let x = this.starterPoint.x - shadowRange;
+        x <= this.starterPoint.x + shadowRange;
+        x++
       ) {
-        if (lighting({ x, y })) {
-          ctx.fillStyle = '#888';
-        } else {
-          ctx.fillStyle = '#000';
+        for (
+          let y = this.starterPoint.y - shadowRange;
+          y <= this.starterPoint.y + shadowRange;
+          y++
+        ) {
+          if (lighting({ x, y })) {
+            ctx.fillStyle = '#888';
+          } else {
+            ctx.fillStyle = '#000';
+          }
+          ctx.fillRect(
+            x * size,
+            y * size,
+            size, size
+          );
         }
-        ctx.fillRect(
-          x * size,
-          y * size,
-          size, size
-        );
       }
+    } else {
+      ctx.fillStyle = '#888';
+      ctx.fillRect(0, 0, 800, 400);
     }
 
     this
@@ -197,10 +204,18 @@ class Board extends Component {
 
   render() {
     return (
-      <canvas width={800} height={400} tabIndex={1}
-        onKeyDown={this.onKeyDown}>
-        hello world!
-      </canvas>
+      <div className='container'>
+        <canvas width={800} height={400} tabIndex={1}
+          onKeyDown={this.onKeyDown}>
+          hello world!
+        </canvas>
+        <p>
+          <label htmlFor='darknes'>darkness</label>
+          <input type='checkbox' id='darknes' checked={this.state.darkness} onChange={
+            () => this.setState((prevState => ({ darkness: !prevState.darkness })))
+            }/>
+          </p>
+      </div>
     );
   }
 }
