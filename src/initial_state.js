@@ -1,22 +1,37 @@
 import maps from './lib/maps';
 import weapons from './weapons';
+import spitRandomUnrepeatable from './lib/Unrepeatable';
+
+const whiteSpaces = maps[0].getEmptySpaces();
+const hero = maps[0].getHero();
+const cave = maps[0].getCave();
+let enemies = maps[0].getEnemies();
+const unreapeatable = spitRandomUnrepeatable(
+  whiteSpaces,
+  [hero, cave]
+);
+
+const health = whiteSpaces[unreapeatable.random()];
+const weapon = weapon? whiteSpaces[unreapeatable.random()]: weapon;
+enemies = enemies.map(() => whiteSpaces[unreapeatable.random()]);
+
 
 export default {
-  hero: maps[0].getHero(),
+  hero,
   dungeon: 1,
-  whiteSpaces: maps[0].getEmptySpaces(),
-  cave: maps[0].getCave(),
+  whiteSpaces,
+  cave,
   weapon: {
-    point: maps[0].getWeapon(),
+    point: weapon,
     name: weapons[0].name,
     index: 0
   },
   attack: 10,
   health: {
     quantity: 100,
-    point: maps[0].getHealth()
+    point: health
   },
-  enemies: maps[0].getEnemies().map((point, index) => ({
+  enemies: enemies.map((point, index) => ({
     id: 'enemy#' + (index + 1),
     health: 40 + 10 * Math.ceil(Math.random() * 3),
     point

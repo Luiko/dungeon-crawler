@@ -18,7 +18,8 @@ class Board extends Component {
     this.starterPoint = { x: 26, y: 10 };
     this.state = {
       restarting: false,
-      darkness: true
+      darkness: true,
+      randomSpawn: true
     };
     this.onKeyDown = this.props.onKeyDown.bind(this);
   }
