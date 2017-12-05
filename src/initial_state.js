@@ -12,7 +12,7 @@ export function getInitialState(random_spawn) {
   let enemies = maps[0].getEnemies();
   if (random_spawn) {
     const unrepeatable = Unrepeatable(whiteSpaces, [hero, cave].filter(e => e));
-    weapon = whiteSpaces[unrepeatable.random()];
+    weapon = weapon? whiteSpaces[unrepeatable.random()]: weapon;
     health = whiteSpaces[unrepeatable.random()];
     enemies = enemies.map(() => whiteSpaces[unrepeatable.random()]);
   }
@@ -34,9 +34,9 @@ export function getInitialState(random_spawn) {
       name: weapons[0].name,
       index: 0
     },
-    attack: 10,
+    attack: 9,
     health: {
-      quantity: 80,
+      quantity: 90,
       point: health
     },
     enemies: enemies.map((point, index) => ({
