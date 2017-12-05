@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import deepEqual from 'fast-deep-equal';
 import {
-  moveTop, moveRight, moveBottom, moveLeft, levelup, restart, fightBoss, fightEnemy
+  moveTop, moveRight, moveBottom, moveLeft, levelup, restart, fightBoss,
+  fightEnemy
 } from './../../actions'
 
 const controls = {
@@ -18,8 +19,7 @@ class Board extends Component {
     this.starterPoint = { x: 26, y: 10 };
     this.state = {
       restarting: false,
-      darkness: true,
-      randomSpawn: true
+      darkness: true
     };
     this.onKeyDown = this.props.onKeyDown.bind(this);
   }
@@ -62,7 +62,7 @@ class Board extends Component {
             ctx.fillText(`restartin in ${5 - counter}..`, 162, 88, 160);
           } else {
             clearInterval(animation);
-            this.props.restart();
+            this.props.restart(this.props.random_spawn);
             this.setState({ restarting: false });
           }
         }, 999);
@@ -212,10 +212,17 @@ class Board extends Component {
         </canvas>
         <p>
           <label htmlFor='darknes'>darkness</label>
-          <input type='checkbox' id='darknes' checked={this.state.darkness} onChange={
-            () => this.setState((prevState => ({ darkness: !prevState.darkness })))
-            }/>
-          </p>
+          <input type='checkbox' id='darknes' checked={this.state.darkness}
+            onChange={
+              () => this.setState((prevState => ({
+                darkness: !prevState.darkness
+              })))
+          }/>
+          <label htmlFor='random'>random spawn</label>
+          <input type='checkbox' id='random' checked={this.props.random_spawn}
+            onChange={() => this.props.toggleRandom(this.props.random_spawn)}
+          />
+        </p>
       </div>
     );
   }
@@ -251,12 +258,16 @@ Board = connect(function mapStateToProps(state) {
     experience: state.experience,
     game_over: state.game_over,
     boss: state.boss,
-    won: state.won
+    won: state.won,
+    random_spawn: state.random_spawn
   }
 }, function mapDispatchToProps(dispatch) {
   return {
     levelup: (index, level) => dispatch(levelup(index, level)),
-    restart: () => dispatch(restart()),
+    restart: (random_spawn) => dispatch(restart(random_spawn)),
+    toggleRandom: (random_spawn) => {
+      dispatch(restart(!random_spawn));
+    },
     onKeyDown(prox) {
       prox.preventDefault();
       const {

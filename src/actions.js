@@ -1,6 +1,6 @@
 import maps from './lib/maps';
 import weapons from './weapons';
-import initalState from './initial_state';
+import { getInitialState } from './initial_state';
 import Unrepeatable from './lib/Unrepeatable';
 
 export const MOVE_TOP = 'MOVE_TOP';
@@ -53,25 +53,26 @@ export const moveLeft = x => ({
   x: x - 1
 });
 
-export const passDungeon = (dungeon) => {
+export const passDungeon = (dungeon, random_spawn) => {
   const whiteSpaces = maps[dungeon].getEmptySpaces();
   const hero = maps[dungeon].getHero();
   const cave = maps[dungeon].getCave();
+  let boss = maps[dungeon].getBoss();
+  let weapon = maps[dungeon].getWeapon();
+  let health = maps[dungeon].getHealth();
   let enemies = maps[dungeon].getEnemies();
-  let boss;
-  const unrepeatable = Unrepeatable(whiteSpaces, [hero, cave].filter(e => e));
-
-  const weapon = whiteSpaces[unrepeatable.random()];
-  const health = whiteSpaces[unrepeatable.random()];
-  enemies = enemies.map(() => whiteSpaces[unrepeatable.random()]);
-  if (maps[dungeon].getBoss()) {
+  if (random_spawn) {
+    const unrepeatable = Unrepeatable(whiteSpaces, [hero, cave].filter(e => e));
+    weapon = whiteSpaces[unrepeatable.random()];
+    health = whiteSpaces[unrepeatable.random()];
+    enemies = enemies.map(() => whiteSpaces[unrepeatable.random()]);
+  }
+  if (boss) {
     boss = {
       health: 400,
       attack: 50,
-      point: maps[dungeon].getBoss()
+      point: boss
     };
-  } else {
-    boss = null;
   }
   return ({
     type: PASS_DUNGEON,
@@ -158,4 +159,5 @@ export const levelup = (index, level) => ({
   health: upgradePickHealth(level)
 });
 
-export const restart = () => Object.assign({ type: RESTART }, initalState);
+export const restart = (random) => Object.assign({ type: RESTART }, getInitialState(random));
+

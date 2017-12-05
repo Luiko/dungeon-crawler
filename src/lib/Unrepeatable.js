@@ -14,7 +14,6 @@ export default function spitRandomUnrepeatable(collection, repeated) {
   function random() {
     const index = Math.floor(Math.random() * collection.length);
     if (store.includes(index)) {
-      console.log('one extra');
       return random();
     }
     else {

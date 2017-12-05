@@ -7,7 +7,7 @@ import {
 
 const reducer = combineReducers({
   hero, dungeon, whiteSpaces, cave, weapon, attack, health, enemies,
-  experience, game_over, boss, won
+  experience, game_over, boss, won, random_spawn
 });
 
 export default reducer;
@@ -170,6 +170,15 @@ function won(state = false, action) {
       return action.payload.boss.health === 0;
     case RESTART:
       return action.won;
+    default:
+      return state;
+  }
+}
+
+function random_spawn(state = true, action) {
+  switch (action.type) {
+    case RESTART:
+      return action.random_spawn;
     default:
       return state;
   }

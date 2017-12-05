@@ -8,7 +8,7 @@ import weapons from '../weapons';
 class App extends Component {
   componentDidUpdate() {
     const {
-      hero, cave, dungeon, weapon, health,
+      hero, cave, dungeon, weapon, health, random_spawn,
       pickWeapon, pickHealth, passDungeon
     } = this.props;
     const dungeonPassed = deepEqual(hero, cave);
@@ -16,11 +16,11 @@ class App extends Component {
     const healthPicked = deepEqual(hero, health.point);
     let action;
     if (dungeonPassed) {
-      action = passDungeon.bind(null,dungeon);
+      action = passDungeon.bind(null, dungeon, random_spawn);
     } else if (weaponPicked) {
-      action = pickWeapon.bind(null,weapon);
+      action = pickWeapon.bind(null, weapon);
     } else if (healthPicked) {
-      action = pickHealth.bind(null,this.props.experience.level);
+      action = pickHealth.bind(null, this.props.experience.level);
     }
     if (action)
       requestAnimationFrame(action);
@@ -59,7 +59,8 @@ App = connect(function mapStateToProps(state) {
     weapon: state.weapon,
     attack: state.attack,
     health: state.health,
-    experience: state.experience
+    experience: state.experience,
+    random_spawn: state.random_spawn
   }
 }, { pickWeapon, pickHealth, passDungeon })(App);
 export default App;
