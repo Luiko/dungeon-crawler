@@ -1,0 +1,40 @@
+body {
+  color: #DB7093;
+  margin: 0; }
+
+html {
+  background-color: #8f8;
+  font-size: 18px; }
+
+main {
+  margin: 0 auto; }
+
+header, footer {
+  text-align: center; }
+
+footer {
+  margin-top: 120px; }
+  footer img {
+    width: 30px;
+    position: relative;
+    top: 8px; }
+
+main {
+  color: red; }
+  main .container {
+    display: -ms-grid;
+    display: grid; }
+    main .container span {
+      color: #9E546C; }
+  main p {
+    text-align: center;
+    font-family: Courier New, Courier, monospace;
+    font-size: 1.2em;
+    color: #DB7093; }
+  main input[type='checkbox'] {
+    margin-left: 8px;
+    margin-right: 16px; }
+
+canvas {
+  margin: auto;
+  border: 1px solid black; }

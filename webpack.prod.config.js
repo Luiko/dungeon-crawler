@@ -3,6 +3,10 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const devConfig = require('./webpack.config');
 
 module.exports = env => Object.assign({}, devConfig, {
+  output: {
+    path: __dirname + '/docs',
+    filename: '[name].bundle.js'
+  },
   module: {
     rules : [ ...devConfig.module.rules.slice(0, 2),
       {
